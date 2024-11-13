@@ -7,7 +7,7 @@ public class ClientCLI {
     public static void main(String[] args) throws IOException {
         ClientFacade clientFacade = new ClientFacade();
         Scanner scanner = new Scanner(System.in);
-        
+
         clientFacade.connect();
         clientFacade.start();
 

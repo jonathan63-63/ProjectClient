@@ -45,7 +45,7 @@ public class Client implements Runnable {
             socket = new Socket("localhost", 1234);
             sc = new ServerConnector(socket);
 
-            sc.connect("localhost", 1234);
+            sc.connect();
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
