@@ -5,24 +5,27 @@ import java.util.Scanner;
 
 public class ClientCLI {
     public static void main(String[] args) throws IOException {
-        ClientFacade clientFacade = new ClientFacade();
-        Scanner scanner = new Scanner(System.in);
+            ClientFacade clientFacade = new ClientFacade();
+            Scanner scanner = new Scanner(System.in);
 
-        clientFacade.connect();
-        clientFacade.start();
+            try {
+                clientFacade.connect("localhost", 1234);
 
-        while (true) {
-            System.out.println("Enter message or quit with 'exit' ");
-            String message = scanner.nextLine();
+                while (true) {
+                    System.out.println("Enter a message to send (or 'exit' to quit):");
+                    String message = scanner.nextLine();
 
-            if (message.equalsIgnoreCase("exit")) {
-                clientFacade.disconnect();
-                break;
+                    if (message.equalsIgnoreCase("exit")) {
+                        clientFacade.disconnect();
+                        break;
+                    }
+
+                    clientFacade.sendMessage(message);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                scanner.close();
             }
-
-            clientFacade.sendMessage(message);
-        }
-
-        scanner.close();
     }
 }

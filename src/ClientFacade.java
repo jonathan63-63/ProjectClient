@@ -4,13 +4,18 @@ import java.io.IOException;
 
 public class ClientFacade {
     private final Client client;
+    private Thread clientThread;
     public ClientFacade()
     {
         this.client = new Client();
     }
 
-    public void connect() throws IOException {
-        client.sc.connect();
+    public void connect(String host, int port) throws IOException {
+        client.setHostAndPort(host, port);
+        if (clientThread == null || !clientThread.isAlive()) {
+            clientThread = new Thread(client);
+            clientThread.start();
+        }
     }
     public void disconnect() throws IOException
     {

@@ -21,17 +21,17 @@ public class ClientHandle implements Runnable {
         {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        } catch (IOException _) {
+        } catch (IOException e) {
 
         }
     }
     @Override
     public void run()
     {
-        String message;// Message protocol får implementeras
+        String message;
             try
             {
-                while ((message = in.readLine()) != null) // från client
+                while ((message = in.readLine()) != null) // from client
                 { // hantera meddelande
                     handleMessage(message);
                 }
@@ -57,7 +57,7 @@ public class ClientHandle implements Runnable {
 
         private void handleMessage(String message)
         {
-            // Pattern matcha meddelande, Får implementera senare för resterande
+            // Pattern match on message, implement more later
             Message parsedMessage = messageProtocol.parseMessage(message);
             if(!parsedMessage.getType().equals("message"))
             {

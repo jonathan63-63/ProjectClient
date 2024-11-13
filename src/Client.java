@@ -12,6 +12,8 @@ public class Client implements Runnable {
     private User user;
     ServerConnector sc;
     ExecutorService threadPool;
+    private String host;
+    private int port;
 
     public Client()
     {
@@ -19,9 +21,11 @@ public class Client implements Runnable {
         threadPool = Executors.newFixedThreadPool(10);
     }
 
+    public void setHostAndPort(String host, int port) {
+        this.host = host;
+        this.port = port;
+    }
 
-    // Ska handleClient() vara en del av Client-klassen? eller i server?
-    // För när en person connectar till server får den en client no???
     public void handleClient() throws IOException {
         threadPool.execute(new ClientHandle(socket, user));
     }
@@ -38,11 +42,11 @@ public class Client implements Runnable {
 
 
     @Override
-    public void run() // Hur gör vi med run() metoden? Hur ska ta vi emot meddelanden från servern?
+    public void run()
     {
         try
         {
-            socket = new Socket("localhost", 1234);
+            socket = new Socket(host, port);
             sc = new ServerConnector(socket);
 
             sc.connect();
