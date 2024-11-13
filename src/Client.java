@@ -44,6 +44,17 @@ public class Client implements Runnable {
         {
             socket = new Socket(host, port);
             sc = new ServerConnector(socket);
+            
+            new Thread(() -> {
+                String message;
+                try {
+                    while ((message = sc.receiveMessage()) != null) {
+                        System.out.println("Client: Received message from server: " + message); // Logging
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
 
         } catch (IOException e) {
             throw new RuntimeException(e);
