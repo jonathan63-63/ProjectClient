@@ -17,7 +17,6 @@ public class Client implements Runnable {
 
     public Client()
     {
-
         threadPool = Executors.newFixedThreadPool(10);
     }
 
@@ -26,9 +25,6 @@ public class Client implements Runnable {
         this.port = port;
     }
 
-    public void handleClient() throws IOException {
-        threadPool.execute(new ClientHandle(socket, user));
-    }
 
     public void shutdown()
     {
@@ -48,11 +44,6 @@ public class Client implements Runnable {
         {
             socket = new Socket(host, port);
             sc = new ServerConnector(socket);
-
-            sc.connect();
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-
 
         } catch (IOException e) {
             throw new RuntimeException(e);

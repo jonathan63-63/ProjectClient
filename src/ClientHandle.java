@@ -9,8 +9,8 @@ public class ClientHandle implements Runnable {
     private BufferedReader in;
     private BufferedWriter out;
     private User user;
-    private ArrayList<ClientHandle> clientHandlers;
-    Message messageProtocol;
+    private static ArrayList<ClientHandle> clientHandlers = new ArrayList<>();
+    static Message messageProtocol = new Message("admin", "admin");
 
     public ClientHandle(Socket socket, User user) throws IOException
     {
@@ -21,6 +21,7 @@ public class ClientHandle implements Runnable {
         {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            clientHandlers.add(this);
         } catch (IOException e) {
 
         }
@@ -33,6 +34,7 @@ public class ClientHandle implements Runnable {
             {
                 while ((message = in.readLine()) != null) // from client
                 { // hantera meddelande
+                    System.out.println("Message received from client: " + message);
                     handleMessage(message);
                 }
 
@@ -47,8 +49,9 @@ public class ClientHandle implements Runnable {
             {
                 try
                 {
-                    client.out.write(message);
+                    client.out.write(message + "\n");
                     client.out.flush();
+                    System.out.println("Message sent to client: " + message);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

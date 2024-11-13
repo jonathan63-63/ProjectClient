@@ -12,7 +12,11 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 System.out.println("New client connected");
 
-                new ServerThread(socket).start();
+                User user = new User("admin", "admin", "admin", "admin");
+                ClientHandle clientHandle = new ClientHandle(socket, user);
+                Thread thread = new Thread(clientHandle);
+                thread.start();
+
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -20,26 +24,3 @@ public class Server {
     }
 }
 
-class ServerThread extends Thread {
-    private Socket socket;
-
-    public ServerThread(Socket socket) {
-        this.socket = socket;
-    }
-
-    public void run() {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
-
-            String message;
-            while ((message = in.readLine()) != null) {
-                System.out.println("Received: " + message);
-                out.write("Echo: " + message);
-                out.newLine();
-                out.flush();
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-}
