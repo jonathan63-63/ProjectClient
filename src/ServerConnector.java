@@ -20,9 +20,9 @@ public class ServerConnector {
         }
     }
 
-    public void connect(String host, int port) throws IOException
+    public void connect() throws IOException // might want to have parameters but for now extract from socket
     {
-        socket = new Socket(host, port);
+        socket = new Socket(socket.getInetAddress().getHostName(), socket.getPort());
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
     }
@@ -32,12 +32,13 @@ public class ServerConnector {
         if(socket != null && !socket.isClosed()) socket.close();
     }
 
+    // to server!
     public void sendMessage(String message) throws IOException
     {
         out.write(message);
         out.flush();
     }
-
+    // receive from server
     public String receiveMessage() throws IOException
     {
         return in.readLine();

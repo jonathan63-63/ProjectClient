@@ -15,7 +15,7 @@ public class Client implements Runnable {
 
     public Client()
     {
-        sc = new ServerConnector(socket);
+
         threadPool = Executors.newFixedThreadPool(10);
     }
 
@@ -42,6 +42,9 @@ public class Client implements Runnable {
     {
         try
         {
+            socket = new Socket("localhost", 1234);
+            sc = new ServerConnector(socket);
+
             sc.connect("localhost", 1234);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
