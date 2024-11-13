@@ -23,5 +23,12 @@ public class Message {
             return new Message("message", message);
         }
     }
+    public String getType()
+    {
+        return type;
+    }
 
+    public String getMessage() {
+        return message;
+    }
 }

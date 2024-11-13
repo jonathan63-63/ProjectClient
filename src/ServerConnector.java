@@ -32,5 +32,16 @@ public class ServerConnector {
         if(socket != null && !socket.isClosed()) socket.close();
     }
 
+    public void sendMessage(String message) throws IOException
+    {
+        out.write(message);
+        out.flush();
+    }
+
+    public String receiveMessage() throws IOException
+    {
+        return in.readLine();
+    }
+
 
 }

@@ -31,13 +31,18 @@ public class Client implements Runnable {
         threadPool.shutdown();
     }
 
+    public void sendMessage(String message) throws IOException
+    {
+        sc.sendMessage(message);
+    }
+
+
     @Override
-    public void run() // Example method for the client to run, can be removed
+    public void run() // Hur gör vi med run() metoden? Hur ska ta vi emot meddelanden från servern?
     {
         try
         {
             sc.connect("localhost", 1234);
-
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 

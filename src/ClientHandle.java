@@ -10,6 +10,7 @@ public class ClientHandle implements Runnable {
     private BufferedWriter out;
     private User user;
     private ArrayList<ClientHandle> clientHandlers;
+    Message messageProtocol;
 
     public ClientHandle(Socket socket, User user) throws IOException
     {
@@ -32,7 +33,7 @@ public class ClientHandle implements Runnable {
             {
                 while ((message = in.readLine()) != null) // från client
                 { // hantera meddelande
-
+                    handleMessage(message);
                 }
 
             } catch (IOException e) {
@@ -40,4 +41,43 @@ public class ClientHandle implements Runnable {
             }
         }
 
+        private void sendToAllClients(String message)
+        {
+            for(ClientHandle client : clientHandlers)
+            {
+                try
+                {
+                    client.out.write(message);
+                    client.out.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        private void handleMessage(String message)
+        {
+            // Pattern matcha meddelande, Får implementera senare för resterande
+            Message parsedMessage = messageProtocol.parseMessage(message);
+            if(!parsedMessage.getType().equals("message"))
+            {
+                switch(parsedMessage.getType())
+                {
+                    case "nick":
+                        user.setNewUserName(parsedMessage.getMessage());
+                        break;
+                    case "join":
+
+                        break;
+                    case "leave":
+
+                        break;
+
+                }
+            } else
+            {
+                sendToAllClients(user.getUsername() + ": " + parsedMessage.getMessage());
+            }
+
+        }
 }
